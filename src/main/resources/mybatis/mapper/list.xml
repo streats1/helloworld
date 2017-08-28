@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="list">
+
+	<!-- <insert id="join" parameterType="uservo">
+		<![CDATA[
+			insert into users values(#{id}, #{password}, #{name}, #{gender}, #{age}, '', '')
+		]]>
+	</insert>
+
+	<select id="getVoById" parameterType="string" resultType="uservo">
+		<![CDATA[
+		SELECT * FROM users WHERE id = #{id }
+ 		]]>
+	</select>
+
+	<insert id="add" parameterType="listvo">
+	<![CDATA[
+	insert INTO list (LIST_ID, ID, PAID, BANK, OPERATIONS, MONEY, NAME, CATEGORY, DAY, LOCATIONX, LOCATIONY)
+	values (seq_list.nextval,#{id},#{paid},#{bank}, #{operations},#{money}, #{name},#{category},sysdate, #{locationX},#{locationY})
+	]]>
+	</insert>
+
+	<select id="getListById" parameterType="string" resultType="listvo">
+	<![CDATA[
+	select list_id as listId,id,paid,bank,operations,money,name,category,DAY,locationX,locationY from list where id = #{id }
+	 ]]>
+	</select>
+
+	<select id="getListLocationByDate" parameterType="map"
+		resultType="listvo">
+	<![CDATA[
+	select list_id as listId, id, paid, bank, operations, money, name, category, DAY, locationX, locationY 
+	from list where 
+	id = #{id } and day BETWEEN TO_DATE (#{minDate }, 'YYYY/MM/DD')
+                   AND TO_DATE (#{maxDate }, 'YYYY/MM/DD') + 1
+	 ]]>
+	</select>
+
+	<update id="updateList" parameterType="listvo">
+ 		<![CDATA[
+		update list set 
+		paid=#{paid },bank=#{bank },operations=#{operations },money=#{money },name=#{name },category=#{category },day=to_date(#{day },'yyyy-mm-dd hh24:mi:ss')
+ 		 where list_Id = #{listId }  	
+ 	 	]]>
+	</update>
+	<delete id="deleteListByListId" parameterType="string">
+ 		<![CDATA[
+		delete from list where list_id=#{listId }
+ 	 	]]>
+	</delete>
+
+	<insert id="addCategory" parameterType="string">
+		<![CDATA[
+			insert into category values(seq_category.nextval,#{category },0)
+		]]>
+	</insert>
+
+	<select id="getCategoryId" parameterType="string" resultType="optionvo">
+		<![CDATA[
+			select category_id as categoryId from category where category = #{category }
+		]]>
+	</select>
+
+	<insert id="addUsersCategory" parameterType="optionvo">
+		<![CDATA[
+			insert into userscategory values(#{id },#{categoryId},'-',0)
+		]]>
+	</insert>
+
+	<select id="getCategoryList" parameterType="string" resultType="optionvo">
+		<![CDATA[
+	select a.category_id as categoryId, a.category,b.id from category a,userscategory b where a.category_id=b.category_id and b.id = #{categoryId}
+		]]>
+	</select>
+
+	<delete id="categoryDeleteById" parameterType="optionvo">
+ 		<![CDATA[
+		delete from userscategory where category_id=#{categoryId } and id=#{id }
+ 	 	]]>
+	</delete>
+
+	<select id="getCategoryById" parameterType="string" resultType="string">
+		<![CDATA[
+		select b.category from userscategory a,category b where a.CATEGORY_ID=b.CATEGORY_ID and a.id=#{id }
+		]]>
+	</select>
+
+	<select id="getCategorySum" parameterType="categorychartvo"
+		resultType="integer">
+		<![CDATA[
+		select sum(money) as sum from list where id = #{id } and category = #{category } and day BETWEEN TO_DATE (#{minDate }, 'YYYY/MM/DD')
+                   AND TO_DATE (#{maxDate }, 'YYYY/MM/DD') + 1
+		]]>
+	</select>
+
+	<select id="getLimitGraph" parameterType="map" resultType="graphvo">
+		<![CDATA[
+			select distinct * from (select category, money_limit as ml from category c, userscategory uc where c.category_id = uc.category_id and id = #{id }) a,
+			(select category, sum(money) as lsum from list where id = #{id } AND day BETWEEN TO_DATE (#{minDate }, 'YYYY/MM/DD')
+                   AND TO_DATE (#{maxDate }, 'YYYY/MM/DD') + 1 and operations = '-'
+			group by category) b where a.category = b.category order by a.category
+		]]>
+
+	</select>
+	<update id="monetLimitSet" parameterType="map">
+		<![CDATA[
+			update userscategory set MONEY_LIMIT=#{moneyLimit } where id=#{id } and CATEGORY_ID=#{categoryId }
+		]]>
+	</update> -->
+</mapper>
